@@ -23,7 +23,7 @@ export const createManyTestBarang = async () => {
 };
 
 export const getTestBarang = async () => {
-  return prismaClient.barang.findUnique({
+  return prismaClient.barang.findFirst({
     where: {
       kode: "test",
     },

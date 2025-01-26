@@ -1,7 +1,12 @@
 import supertest from "supertest";
 import { web } from "../src/application/web";
 import { logger } from "../src/application/logging";
-import { createManyTestBarang, removeAllTestBarang } from "./test-util";
+import {
+  createManyTestBarang,
+  createTestBarang,
+  getTestBarang,
+  removeAllTestBarang,
+} from "./test-util";
 
 describe("POST /api/barang", () => {
   afterEach(async () => {
@@ -63,9 +68,37 @@ describe("POST /api/barang", () => {
   });
 });
 
-// describe('DELETE /api/barang/:barangId', () => {
-//   it('should delete barang')
-//  })
+describe("GET /api/barang/:barangId", () => {
+  beforeEach(async () => {
+    await createTestBarang();
+  });
+
+  afterEach(async () => {
+    await removeAllTestBarang();
+  });
+
+  it("should get a barang", async () => {
+    const testBarang = await getTestBarang();
+
+    const result = await supertest(web).get("/api/barang/" + testBarang.id);
+
+    expect(result.status).toBe(200);
+    expect(result.body.data.id).toBe(testBarang.id);
+    expect(result.body.data.kode).toBe(testBarang.kode);
+    expect(result.body.data.nama).toBe(testBarang.nama);
+    expect(Number(result.body.data.harga)).toBe(Number(testBarang.harga));
+  });
+
+  it("should return 404 if barang id is not found", async () => {
+    const testBarang = await getTestBarang();
+
+    const result = await supertest(web).get(
+      "/api/barang/" + (testBarang.id + 1)
+    );
+
+    expect(result.status).toBe(404);
+  });
+});
 
 describe("GET /api/barang", () => {
   beforeEach(async () => {

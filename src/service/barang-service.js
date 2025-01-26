@@ -6,22 +6,6 @@ import { validate } from "../validation/validation";
 import { prismaClient } from "../application/database";
 import { ResponseError } from "../error/response-error";
 
-const checkBarangMustExists = async (barangId) => {
-  barangId = validate(getBarangValidation, barangId);
-
-  const totalBarangInDatabase = await prismaClient.barang.count({
-    where: {
-      id: barangId,
-    },
-  });
-
-  if (totalBarangInDatabase !== 1) {
-    throw new ResponseError(404, "barang is not found");
-  }
-
-  return barangId;
-};
-
 const create = async (request) => {
   const barang = validate(createBarangValidation, request);
 
@@ -47,7 +31,7 @@ const create = async (request) => {
 };
 
 const get = async (barangId) => {
-  barangId = await checkBarangMustExists(barangId);
+  barangId = validate(getBarangValidation, barangId);
 
   const barang = await prismaClient.barang.findFirst({
     where: {
