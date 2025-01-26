@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Barang {
+  id Int @id @unique @default(autoincrement())
+  kode String @db.VarChar(10)
+  nama String @db.VarChar(100)
+  harga Decimal
+  SalesDet SalesDet[]
+
+  @@map("m_barang")
+}
+
+model Customer {
+  id Int @id @unique @default(autoincrement())
+  kode String @db.VarChar(10)
+  nama String @db.VarChar(100)
+  telp String @db.VarChar(20)
+  Sales Sales[]
+
+  @@map("m_customer")
+}
+
+model Sales {
+  id Int @id @unique @default(autoincrement())
+  kode String @db.VarChar(10)
+  tgl DateTime
+  cust_id Customer @relation(fields: [id], references: [id])
+  subtotal Decimal
+  diskon Decimal
+  ongkir Decimal
+  total_bayar Decimal
+  SalesDet SalesDet[]
+
+  @@map("t_sales")
+}
+
+model SalesDet {
+  sales_id Sales @relation(fields: [salesId], references: [id])
+  salesId Int
+  barang_id Barang @relation(fields: [barangId], references: [id])
+  barangId Int
+  harga_bandrol Decimal
+  qty Int
+  diskon_pct Decimal
+  diskon_nilai Decimal
+  harga_diskon Decimal
+  total Decimal
+
+  @@id([salesId, barangId])
+  @@map("t_sales_det")
+}
