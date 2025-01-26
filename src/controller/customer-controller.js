@@ -1,8 +1,8 @@
-import barangService from "../service/barang-service";
+import customerService from "../service/customer-service";
 
 const create = async (req, res, next) => {
   try {
-    const result = await barangService.create(req.body);
+    const result = await customerService.create(req.body);
     res.status(200).json({ data: result });
   } catch (e) {
     next(e);
@@ -11,9 +11,8 @@ const create = async (req, res, next) => {
 
 const get = async (req, res, next) => {
   try {
-    const barangId = req.params.barangId;
-
-    const result = await barangService.get(barangId);
+    const customerId = req.params.customerId;
+    const result = await customerService.get(customerId);
 
     res.status(200).json({
       data: result,
@@ -25,7 +24,7 @@ const get = async (req, res, next) => {
 
 const list = async (_req, res, next) => {
   try {
-    const result = await barangService.list();
+    const result = await customerService.list();
 
     res.status(200).json({
       data: result,
