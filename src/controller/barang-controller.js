@@ -1,4 +1,4 @@
-import barangService from "../service/barang-service";
+import barangService from "../service/barang-service.js";
 
 const create = async (req, res, next) => {
   try {

@@ -1,7 +1,7 @@
-import { prismaClient } from "../application/database";
-import { ResponseError } from "../error/response-error";
-import { getCustomerValidation } from "../validation/customer-validation";
-import { validate } from "../validation/validation";
+import { prismaClient } from "../application/database.js";
+import { ResponseError } from "../error/response-error.js";
+import { getCustomerValidation } from "../validation/customer-validation.js";
+import { validate } from "../validation/validation.js";
 
 const get = async (customerId) => {
   customerId = validate(getCustomerValidation, customerId);

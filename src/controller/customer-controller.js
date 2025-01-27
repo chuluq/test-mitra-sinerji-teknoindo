@@ -1,4 +1,4 @@
-import customerService from "../service/customer-service";
+import customerService from "../service/customer-service.js";
 
 const create = async (req, res, next) => {
   try {

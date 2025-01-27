@@ -1,10 +1,10 @@
 import {
   createBarangValidation,
   getBarangValidation,
-} from "../validation/barang-validation";
-import { validate } from "../validation/validation";
-import { prismaClient } from "../application/database";
-import { ResponseError } from "../error/response-error";
+} from "../validation/barang-validation.js";
+import { validate } from "../validation/validation.js";
+import { prismaClient } from "../application/database.js";
+import { ResponseError } from "../error/response-error.js";
 
 const create = async (request) => {
   const barang = validate(createBarangValidation, request);

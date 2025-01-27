@@ -1,6 +1,6 @@
 import express from "express";
-import barangController from "../controller/barang-controller";
-import customerController from "../controller/customer-controller";
+import barangController from "../controller/barang-controller.js";
+import customerController from "../controller/customer-controller.js";
 
 const publicRouter = new express.Router();
 
