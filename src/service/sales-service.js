@@ -33,6 +33,9 @@ const get = async (salesId) => {
 const list = async () => {
   return await prismaClient.sales.findMany({
     include: {
+      customer: {
+        select: { nama: true },
+      },
       _count: {
         select: { sales_details: true },
       },
