@@ -1,6 +1,7 @@
 import express from "express";
 import barangController from "../controller/barang-controller.js";
 import customerController from "../controller/customer-controller.js";
+import salesController from "../controller/sales-controller.js";
 
 const publicRouter = new express.Router();
 
@@ -15,5 +16,7 @@ publicRouter.get(`/api/customers/:customerId`, customerController.get);
 publicRouter.get(`/api/customers`, customerController.list);
 
 // Sales API
+publicRouter.post(`/api/sales`, salesController.create);
+publicRouter.get(`/api/sales`, salesController.list);
 
 export { publicRouter };

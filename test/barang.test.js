@@ -1,12 +1,12 @@
 import supertest from "supertest";
-import { web } from "../src/application/web";
-import { logger } from "../src/application/logging";
+import { web } from "../src/application/web.js";
+import { logger } from "../src/application/logging.js";
 import {
   createManyTestBarang,
   createTestBarang,
   getTestBarang,
   removeAllTestBarang,
-} from "./test-util";
+} from "./test-util.js";
 
 describe("POST /api/barang", () => {
   afterEach(async () => {

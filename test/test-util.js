@@ -67,3 +67,80 @@ export const getTestCustomer = async () => {
 export const removeAllTestCustomer = async () => {
   await prismaClient.customer.deleteMany();
 };
+
+export const createTestSales = async () => {
+  await prismaClient.sales.create({
+    data: {
+      kode: "12345",
+      tgl: "2023-04-01T00:00:00.000Z",
+      cust_id: 32,
+      subtotal: 100000,
+      diskon: 1000,
+      ongkir: 5000,
+      total_bayar: 104000,
+    },
+  });
+};
+
+export const createTestDetailSales = async (salesId) => {
+  const sales_details = [
+    {
+      barang_id: 87,
+      harga_bandrol: 100000,
+      qty: 1,
+      diskon_pct: 10,
+      diskon_nilai: 10000,
+      harga_diskon: 90000,
+      total: 90000,
+    },
+  ];
+
+  sales_details.forEach((detail) => {
+    detail.sales_id = salesId;
+  });
+
+  await prismaClient.salesDetail.createMany({
+    data: sales_details,
+  });
+};
+
+export const createManyTestSales = async () => {
+  for (let i = 0; i < 2; i++) {
+    const result = await prismaClient.sales.create({
+      data: {
+        kode: "12345",
+        tgl: "2023-04-01T00:00:00.000Z",
+        cust_id: 32,
+        subtotal: 100000,
+        diskon: 1000,
+        ongkir: 5000,
+        total_bayar: 104000,
+      },
+    });
+
+    const sales_details = [
+      {
+        barang_id: 87,
+        harga_bandrol: 100000,
+        qty: 1,
+        diskon_pct: 10,
+        diskon_nilai: 10000,
+        harga_diskon: 90000,
+        total: 90000,
+      },
+    ];
+
+    sales_details.forEach((detail) => {
+      detail.sales_id = result.id;
+    });
+
+    await prismaClient.salesDetail.createMany({
+      data: sales_details,
+    });
+  }
+};
+
+export const removeAllTestSales = async () => {
+  await prismaClient.salesDetail.deleteMany();
+  await prismaClient.sales.deleteMany();
+};

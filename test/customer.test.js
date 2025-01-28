@@ -1,11 +1,11 @@
 import supertest from "supertest";
-import { web } from "../src/application/web";
+import { web } from "../src/application/web.js";
 import {
   createManyTestCustomer,
   createTestCustomer,
   getTestCustomer,
   removeAllTestCustomer,
-} from "./test-util";
+} from "./test-util.js";
 
 describe("GET /api/customers/:customerId", () => {
   beforeEach(async () => {

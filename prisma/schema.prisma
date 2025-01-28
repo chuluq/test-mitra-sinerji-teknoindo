@@ -18,7 +18,7 @@ model Barang {
   kode String @db.VarChar(10)
   nama String @db.VarChar(100)
   harga Decimal
-  SalesDet SalesDet[]
+  sales_details SalesDetail[]
 
   @@map("m_barang")
 }
@@ -28,7 +28,7 @@ model Customer {
   kode String @db.VarChar(10)
   nama String @db.VarChar(100)
   telp String @db.VarChar(20)
-  Sales Sales[]
+  sales Sales[]
 
   @@map("m_customer")
 }
@@ -37,28 +37,30 @@ model Sales {
   id Int @id @unique @default(autoincrement())
   kode String @db.VarChar(10)
   tgl DateTime
-  cust_id Customer @relation(fields: [id], references: [id])
+  cust_id Int
   subtotal Decimal
   diskon Decimal
   ongkir Decimal
   total_bayar Decimal
-  SalesDet SalesDet[]
+  no_transaksi String @unique @db.Uuid @default(uuid())
+  customer Customer @relation(fields: [cust_id], references: [id])
+  sales_details SalesDetail[]
 
   @@map("t_sales")
 }
 
-model SalesDet {
-  sales_id Sales @relation(fields: [salesId], references: [id])
-  salesId Int
-  barang_id Barang @relation(fields: [barangId], references: [id])
-  barangId Int
+model SalesDetail {
+  sales_id Int
+  barang_id Int
   harga_bandrol Decimal
   qty Int
   diskon_pct Decimal
   diskon_nilai Decimal
   harga_diskon Decimal
   total Decimal
+  sales Sales @relation(fields: [sales_id], references: [id])
+  barang Barang @relation(fields: [barang_id], references: [id])
 
-  @@id([salesId, barangId])
+  @@id([sales_id, barang_id])
   @@map("t_sales_det")
 }
