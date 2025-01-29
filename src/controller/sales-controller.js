@@ -9,9 +9,13 @@ const create = async (req, res, next) => {
   }
 };
 
-const list = async (_req, res, next) => {
+const search = async (req, res, next) => {
   try {
-    const result = await salesService.list();
+    const request = {
+      name: req.query.name,
+    };
+
+    const result = await salesService.search(request);
 
     res.status(200).json({ data: result });
   } catch (e) {
@@ -32,4 +36,4 @@ const remove = async (req, res, next) => {
   }
 };
 
-export default { create, list, remove };
+export default { create, search, remove };

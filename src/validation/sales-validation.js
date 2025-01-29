@@ -27,8 +27,13 @@ const createSalesDetailValidation = Joi.object({
 
 const getSalesValidation = Joi.number().positive().required();
 
+const searchSalesValidation = Joi.object({
+  name: Joi.string().optional(),
+});
+
 export {
   createSalesValidation,
   createSalesDetailValidation,
   getSalesValidation,
+  searchSalesValidation,
 };

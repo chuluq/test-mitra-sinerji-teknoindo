@@ -4,6 +4,7 @@ import {
   createSalesDetailValidation,
   createSalesValidation,
   getSalesValidation,
+  searchSalesValidation,
 } from "../validation/sales-validation.js";
 import { validate } from "../validation/validation.js";
 
@@ -58,14 +59,44 @@ const remove = async (salesId) => {
   return await prismaClient.$transaction([deleteSalesDetails, deleteSales]);
 };
 
-const list = async () => {
-  return await prismaClient.sales.findMany({
-    include: {
+const search = async (request) => {
+  request = validate(searchSalesValidation, request);
+
+  const filters = [];
+
+  if (request?.name) {
+    filters.push({
       customer: {
-        select: { nama: true },
+        nama: {
+          contains: request?.name,
+        },
+      },
+    });
+  }
+
+  return await prismaClient.sales.findMany({
+    where: {
+      AND: filters,
+    },
+    select: {
+      id: true,
+      kode: true,
+      tgl: true,
+      cust_id: true,
+      subtotal: true,
+      diskon: true,
+      ongkir: true,
+      total_bayar: true,
+      no_transaksi: true,
+      customer: {
+        select: {
+          nama: true,
+        },
       },
       _count: {
-        select: { sales_details: true },
+        select: {
+          sales_details: true,
+        },
       },
     },
   });
@@ -109,4 +140,4 @@ const create = async (request) => {
   });
 };
 
-export default { get, create, list, remove };
+export default { get, create, search, remove };

@@ -17,7 +17,7 @@ publicRouter.get(`/api/customers`, customerController.list);
 
 // Sales API
 publicRouter.post(`/api/sales`, salesController.create);
-publicRouter.get(`/api/sales`, salesController.list);
+publicRouter.get(`/api/sales`, salesController.search);
 publicRouter.delete(`/api/sales/:salesId`, salesController.remove);
 
 export { publicRouter };
