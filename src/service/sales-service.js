@@ -30,6 +30,34 @@ const get = async (salesId) => {
   return sales;
 };
 
+const remove = async (salesId) => {
+  salesId = validate(getSalesValidation, salesId);
+
+  const totalInDatabase = await prismaClient.sales.count({
+    where: {
+      id: salesId,
+    },
+  });
+
+  if (totalInDatabase !== 1) {
+    throw new ResponseError(404, "transaction is not found");
+  }
+
+  const deleteSalesDetails = prismaClient.salesDetail.deleteMany({
+    where: {
+      sales_id: salesId,
+    },
+  });
+
+  const deleteSales = prismaClient.sales.delete({
+    where: {
+      id: salesId,
+    },
+  });
+
+  return await prismaClient.$transaction([deleteSalesDetails, deleteSales]);
+};
+
 const list = async () => {
   return await prismaClient.sales.findMany({
     include: {
@@ -81,4 +109,4 @@ const create = async (request) => {
   });
 };
 
-export default { get, create, list };
+export default { get, create, list, remove };

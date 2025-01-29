@@ -19,4 +19,17 @@ const list = async (_req, res, next) => {
   }
 };
 
-export default { create, list };
+const remove = async (req, res, next) => {
+  try {
+    const salesId = req.params.salesId;
+
+    await salesService.remove(salesId);
+    res.status(200).json({
+      data: "OK",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+export default { create, list, remove };
