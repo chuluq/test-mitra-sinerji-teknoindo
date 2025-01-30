@@ -50,6 +50,7 @@ model Sales {
 }
 
 model SalesDetail {
+  id Int @id @unique @default(autoincrement())
   sales_id Int
   barang_id Int
   harga_bandrol Decimal
@@ -61,6 +62,5 @@ model SalesDetail {
   sales Sales @relation(fields: [sales_id], references: [id])
   barang Barang @relation(fields: [barang_id], references: [id])
 
-  @@id([sales_id, barang_id])
   @@map("t_sales_det")
 }

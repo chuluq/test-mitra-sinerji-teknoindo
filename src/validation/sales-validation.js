@@ -10,6 +10,17 @@ const createSalesValidation = Joi.object({
   total_bayar: Joi.number().required(),
 });
 
+const updateSalesValidation = Joi.object({
+  id: Joi.number().required(),
+  kode: Joi.string().max(10).required(), // kode barang
+  tgl: Joi.date().iso().required(),
+  cust_id: Joi.number().positive().required(),
+  subtotal: Joi.number().required(),
+  diskon: Joi.number().optional(),
+  ongkir: Joi.number().optional(),
+  total_bayar: Joi.number().required(),
+});
+
 const salesDetailValidation = Joi.object().keys({
   sales_id: Joi.number().positive().required(),
   barang_id: Joi.number().positive().required(),
@@ -33,7 +44,8 @@ const searchSalesValidation = Joi.object({
 
 export {
   createSalesValidation,
-  createSalesDetailValidation,
-  getSalesValidation,
+  updateSalesValidation,
   searchSalesValidation,
+  getSalesValidation,
+  createSalesDetailValidation,
 };

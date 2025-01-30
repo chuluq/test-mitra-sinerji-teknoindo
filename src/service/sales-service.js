@@ -5,6 +5,7 @@ import {
   createSalesValidation,
   getSalesValidation,
   searchSalesValidation,
+  updateSalesValidation,
 } from "../validation/sales-validation.js";
 import { validate } from "../validation/validation.js";
 
@@ -147,4 +148,72 @@ const create = async (request) => {
   });
 };
 
-export default { get, create, search, remove };
+const update = async (request, salesId) => {
+  salesId = validate(getSalesValidation, salesId);
+
+  const {
+    sales_details,
+    kode,
+    tgl,
+    cust_id,
+    subtotal,
+    diskon,
+    ongkir,
+    total_bayar,
+  } = request;
+
+  const validatedSales = validate(updateSalesValidation, {
+    id: salesId,
+    kode,
+    tgl,
+    cust_id,
+    subtotal,
+    diskon,
+    ongkir,
+    total_bayar,
+  });
+
+  const totalSalesInDatabase = await prismaClient.sales.count({
+    where: {
+      id: salesId,
+    },
+  });
+
+  if (totalSalesInDatabase !== 1) {
+    throw new ResponseError(404, "sales is not found");
+  }
+
+  sales_details.forEach((detail) => {
+    detail.sales_id = salesId;
+  });
+
+  const validatedSalesDetails = validate(createSalesDetailValidation, {
+    sales_details,
+  });
+
+  await prismaClient.sales.update({
+    where: {
+      id: salesId,
+    },
+    data: {
+      id: validatedSales.id,
+      cust_id: validatedSales.cust_id,
+      diskon: validatedSales.diskon,
+      kode: validatedSales.kode,
+      tgl: new Date(validatedSales.tgl),
+      no_transaksi: validatedSales.no_transaksi,
+      ongkir: validatedSales.ongkir,
+      subtotal: validatedSales.subtotal,
+      total_bayar: validatedSales.total_bayar,
+    },
+  });
+
+  return prismaClient.$transaction([
+    prismaClient.salesDetail.deleteMany({ where: { sales_id: salesId } }),
+    prismaClient.salesDetail.createMany({
+      data: validatedSalesDetails.sales_details,
+    }),
+  ]);
+};
+
+export default { get, create, search, update, remove };

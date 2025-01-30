@@ -19,6 +19,7 @@ publicRouter.get(`/api/customers`, customerController.list);
 publicRouter.post(`/api/sales`, salesController.create);
 publicRouter.get(`/api/sales/:salesId`, salesController.get);
 publicRouter.get(`/api/sales`, salesController.search);
+publicRouter.put(`/api/sales/:salesId`, salesController.update);
 publicRouter.delete(`/api/sales/:salesId`, salesController.remove);
 
 export { publicRouter };

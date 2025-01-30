@@ -37,6 +37,19 @@ const search = async (req, res, next) => {
   }
 };
 
+const update = async (req, res, next) => {
+  try {
+    const salesId = req.params.salesId;
+
+    await salesService.update(req.body, salesId);
+    res.status(200).json({
+      data: "OK",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
 const remove = async (req, res, next) => {
   try {
     const salesId = req.params.salesId;
@@ -50,4 +63,4 @@ const remove = async (req, res, next) => {
   }
 };
 
-export default { create, get, search, remove };
+export default { create, get, search, update, remove };
