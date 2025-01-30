@@ -69,6 +69,7 @@ const search = async (request) => {
       customer: {
         nama: {
           contains: request?.name,
+          mode: "insensitive",
         },
       },
     });
