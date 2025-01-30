@@ -27,7 +27,11 @@ const get = async (salesId) => {
       ongkir: true,
       no_transaksi: true,
       customer: true,
-      sales_details: true,
+      sales_details: {
+        include: {
+          barang: true,
+        },
+      },
     },
   });
 
