@@ -21,6 +21,12 @@ const get = async (salesId) => {
       cust_id: true,
       total_bayar: true,
       tgl: true,
+      subtotal: true,
+      diskon: true,
+      ongkir: true,
+      no_transaksi: true,
+      customer: true,
+      sales_details: true,
     },
   });
 

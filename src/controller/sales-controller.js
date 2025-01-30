@@ -9,6 +9,20 @@ const create = async (req, res, next) => {
   }
 };
 
+const get = async (req, res, next) => {
+  try {
+    const salesId = req.params.salesId;
+
+    const result = await salesService.get(salesId);
+
+    res.status(200).json({
+      data: result,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
 const search = async (req, res, next) => {
   try {
     const request = {
@@ -36,4 +50,4 @@ const remove = async (req, res, next) => {
   }
 };
 
-export default { create, search, remove };
+export default { create, get, search, remove };
